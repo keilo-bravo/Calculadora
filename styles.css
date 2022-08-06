@@ -1,0 +1,70 @@
+.ppal{
+    margin:auto;
+    margin-top: 10vh;
+    width: 320px;
+}
+/* From uiverse.io by @Voxybuns */
+button {
+    /* Variables */
+   --button_radius: 0.75em;
+   --button_color: #e8e8e8;
+   --button_outline_color: #000000;
+   font-size: 17px;
+   font-weight: bold;
+   border: none;
+   border-radius: var(--button_radius);
+   background: var(--button_outline_color);
+   width: 4em;
+   height: 3em;
+   margin: 3px;
+   font-family: 'Press Start 2P', cursive;
+}
+.button_top {
+   display: block;
+   box-sizing: border-box;
+   border: 1.8px solid var(--button_outline_color);
+   border-radius: var(--button_radius);
+   padding: 0.75em 0.5em;
+   background: var(--button_color);
+   color: var(--button_outline_color);
+   transform: translateY(-0.2em);
+   transition: transform 0.1s ease;
+}
+textarea{
+    padding: 1%;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 25px;
+    border-radius: 10px;
+    border-width: 5px;
+    margin-left: 10px;
+}
+button:hover .button_top {
+    /* Pull the button upwards when hovered */
+    transform: translateY(-0.33em);
+}
+  
+button:active .button_top {
+    /* Push the button downwards when pressed */
+   transform: translateY(0);
+}
+
+.cero{
+    width: 8.6em;
+}
+.doble, .doble .button_top{
+    height: 6.2em;
+}
+.box {
+    display: flex;
+}
+.plus{
+    margin-left: 3px;
+}
+.doble .button_top{
+    padding: 2.1em 0.5em; 
+}
+@media screen and (max-width:326px) {
+    button {
+        margin-right: 0;
+    }
+}

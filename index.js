@@ -17,10 +17,13 @@ function Clickea(tecla) {
  
         sp[0].style.transform = "translateY(-0.2em)";
     },100 )
-    console.log(sp[0].innerText);
     textArea(sp[0].innerText)
 }
 const arr = []
+const auxOp = {
+    "l":"",
+    "r":"",
+}
 
 function textArea(btn) {
     const writeArea = document.getElementsByTagName("textarea")[0]
@@ -39,8 +42,7 @@ function textArea(btn) {
             writeArea.innerHTML = texto; 
         } else {
             arr.push(btn)
-            const texto = arr.join(' ')
-            console.log("resultado", arr[arr.length-1]);
+            const texto = arr.join('')
             writeArea.innerHTML = texto; 
         }
         writeArea.scrollTo(0,100)
@@ -48,71 +50,78 @@ function textArea(btn) {
 }
 function igualdad(texto, op) {
     const writeArea = document.getElementsByTagName("textarea")[0]
-    let temp
+    let temp = texto
     let result = 0
-    if (op==="=" || texto.includes("-")) {
-        temp = texto.split("-")
-        for (let i = 1; i < temp.length; i++) {
-            result = rest( temp[i-1], temp[i] )
-            temp[i] = result
-        }
-        console.log("rest",result);
-    }
-    else if (op==="+" || texto.includes("+")) {
-        temp = texto.split("+")
-        for (let i = 1; i < temp.length; i++) {
-            result = sum( temp[i-1], temp[i] )
-            temp[i] = result
-        }
-        console.log("sum",result);
-    }
-    else if (op==="/" || texto.includes("/")) {
-        temp = texto.split("/")
-        for (let i = 1; i < temp.length; i++) {
-            result = divi( temp[i-1], temp[i] )
-            temp[i] = result
-        }
-        console.log("div",result);
-    }
-    else if (op==="*" || texto.includes("*")) {
-        temp = texto.split("*")
+    let aux
+    if (temp.includes("*")) {
+        temp = temp.split("*")
         for (let i = 1; i < temp.length; i++) {
             result = multi( temp[i-1], temp[i] )
-            temp[i] = result
+            aux = `${auxOp.l}*${auxOp.r}`
         }
-        console.log("multi",result);
+        temp = reOrdena(temp,aux,result,"*")
     }
-    writeArea.innerHTML = "= " + result;
-    arr.length = 0
-
+    else if (temp.includes("/")) {
+        temp = temp.split("/")
+        for (let i = 1; i < temp.length; i++) {
+            result = divi( temp[i-1], temp[i] )
+            aux = `${auxOp.l}/${auxOp.r}`
+        }
+        temp = reOrdena(temp,aux,result,"/")
+    }
+    else if (temp.includes("+")) {
+        temp = temp.split("+")
+        for (let i = 1; i < temp.length; i++) {
+            result = sum( temp[i-1], temp[i] )
+            aux = `${auxOp.l}+${auxOp.r}`
+        }
+        temp = reOrdena(temp,aux,result,"+")
+    }
+    else if (temp.includes("-")) {
+        temp = temp.split("-")
+        for (let i = 1; i < temp.length; i++) {
+            result = rest( temp[i-1], temp[i] )
+            aux = `${auxOp.l}-${auxOp.r}`
+        }
+        temp = reOrdena(temp,aux,result,"-")
+    }
+    if ((!temp.includes("+"))&&(!temp.includes("*"))&&!(temp.includes("-"))&&!(temp.includes("/"))) {
+        writeArea.innerHTML = "= " + temp;
+        arr.length = 0
+    }
+}
+function reOrdena(temp,aux,result,op) {
+    if (result==="Error") {
+        return "Error";
+    }
+    temp = temp.join(' ')
+    while (temp.includes(" ")) {
+        temp = temp.replace(" ",op)
+    }
+    temp = temp.replace(aux,result)
+    if (temp.includes("+")||temp.includes("*")||temp.includes("-")||temp.includes("/")) {
+        igualdad(temp, op)
+    }
+    return temp
 }
 function multi( l, r ) {
-    console.log(l,r);
     if(l===''){
         l='0'
     }
     if(r===''){
         r='0'
     }
+    l = verifyL(l)
+    r = verifyR(r)
     return (parseInt(l)*parseInt(r)).toString()
 }
 function divi( l, r ) {
-    if(l==='' || l==='0'){
+    if((l==='' || l==='0')||(r==='' || r==='0') ){
         return 'Error'
     }
-    if (r==='' || r==='0') {
-        return 'Error'
-    }
-    if (l.includes("*")) {
-        igualdad(l, "*")
-    }
-    else if (r.includes("*")) {
-        igualdad(r, "*")
-    }
-    else {
-        return (parseInt(l)/parseInt(r)).toString()
-    }
-    
+    l = verifyL(l)
+    r = verifyR(r)
+    return (parseInt(l)/parseInt(r)).toString()
 }
 function sum( l, r ) {
     if(l===''){
@@ -121,32 +130,42 @@ function sum( l, r ) {
     if(r===''){
         r='0'
     }
-    if (l.includes("/")) {
-        igualdad(l, "/")
-    }
-    else if (r.includes("/")) {
-        igualdad(r, "/")
-    }
-    else {
-        return (parseInt(l)+parseInt(r)).toString()
-    }
+    l = verifyL(l)
+    r = verifyR(r)
+    return (parseInt(l)+parseInt(r)).toString()
 }
 function rest( l, r ) {
     if(l===''){
         l='0'
-        console.log('es L',l);
     }
     if(r===''){
         r='0'
     }
-    if (l.includes("+")) {
-        console.log(l);
-        igualdad(l, "+")
+    l = verifyL(l)
+    r = verifyR(r)
+    return (parseInt(l)-parseInt(r)).toString()
+}
+function verifyL(l) {
+    let auxL=[]
+    if (l.includes("+")||l.includes("*")||l.includes("-")||l.includes("/")) {
+        for (let i = l.length-1; i > -1; i--) {
+            if((l[i]==="+"||l[i]==="-"||l[i]==="/"||l[i]==="*")&&auxL.length===0) auxL.push(i)
+        }
+        l =l.slice(auxL[0]+1, l.length)
     }
-    else if (r.includes("+")) {
-        igualdad(r, "+")
+    auxOp.l=l
+    return l
+}
+function verifyR(r) {
+    let auxR=[]
+    if (r.includes("+")||r.includes("*")||r.includes("-")||r.includes("/")) {
+        for (let i = 0; i < r.length; i++) {
+            if((r[i]==="+"||r[i]==="-"||r[i]==="/"||r[i]==="*")&&auxR.length===0) {
+                auxR.push(i)
+            }
+        }
+        r =r.slice(0, auxR[0])
     }
-    else {
-        return (parseInt(l)-parseInt(r)).toString()
-    }
+    auxOp.r=r
+    return r
 }

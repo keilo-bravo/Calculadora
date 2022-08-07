@@ -61,11 +61,6 @@ textarea{
     border-width: 5px;
     margin-left: 10px;
 }
-button:hover .button_top {
-    /* Pull the button upwards when hovered */
-    transform: translateY(-0.33em);
-}
-  
 button:active .button_top {
     /* Push the button downwards when pressed */
    transform: translateY(0);

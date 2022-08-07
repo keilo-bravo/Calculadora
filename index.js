@@ -50,7 +50,7 @@ function igualdad(texto, op) {
     const writeArea = document.getElementsByTagName("textarea")[0]
     let temp
     let result = 0
-    if (texto.includes("-")) {
+    if (op==="=" || texto.includes("-")) {
         temp = texto.split("-")
         for (let i = 1; i < temp.length; i++) {
             result = rest( temp[i-1], temp[i] )
@@ -88,10 +88,21 @@ function igualdad(texto, op) {
 }
 function multi( l, r ) {
     console.log(l,r);
-    return parseInt(l)*parseInt(r)
+    if(l===''){
+        l='0'
+    }
+    if(r===''){
+        r='0'
+    }
+    return (parseInt(l)*parseInt(r)).toString()
 }
 function divi( l, r ) {
-    console.log(l,r);
+    if(l==='' || l==='0'){
+        return 'Error'
+    }
+    if (r==='' || r==='0') {
+        return 'Error'
+    }
     if (l.includes("*")) {
         igualdad(l, "*")
     }
@@ -99,12 +110,17 @@ function divi( l, r ) {
         igualdad(r, "*")
     }
     else {
-        return parseInt(l)/parseInt(r)
+        return (parseInt(l)/parseInt(r)).toString()
     }
     
 }
 function sum( l, r ) {
-    console.log(l,r);
+    if(l===''){
+        l='0'
+    }
+    if(r===''){
+        r='0'
+    }
     if (l.includes("/")) {
         igualdad(l, "/")
     }
@@ -112,11 +128,17 @@ function sum( l, r ) {
         igualdad(r, "/")
     }
     else {
-        return parseInt(l)+parseInt(r)
+        return (parseInt(l)+parseInt(r)).toString()
     }
 }
 function rest( l, r ) {
-    console.log(l,r);
+    if(l===''){
+        l='0'
+        console.log('es L',l);
+    }
+    if(r===''){
+        r='0'
+    }
     if (l.includes("+")) {
         console.log(l);
         igualdad(l, "+")
@@ -125,6 +147,6 @@ function rest( l, r ) {
         igualdad(r, "+")
     }
     else {
-        return parseInt(l)-parseInt(r)
+        return (parseInt(l)-parseInt(r)).toString()
     }
 }

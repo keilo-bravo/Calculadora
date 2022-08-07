@@ -1,7 +1,30 @@
 .ppal{
     margin:auto;
-    margin-top: 10vh;
+    margin-top: 9vh;
+    padding-top: 1vh;
     width: 320px;
+    height: 27.5em;
+    border-radius: 10px;
+    background-color: #414040;
+}
+.ppalDiv{
+    margin:auto;
+    width: 310px;
+    height: 27em;
+    border-radius: 10px;
+    background-color: #837fff9b;
+    transform:translate(-0.3em);
+}
+.txt{
+    width: 16.5em;
+    height: 8em;
+    background-color: rgba(0, 255, 255, 0.194);
+    z-index: 10;
+    position: absolute;
+    border-radius: 5px;
+    border-width: 5px;
+    margin-left: 15px;
+    transform:translateY(-0.6em);
 }
 /* From uiverse.io by @Voxybuns */
 button {

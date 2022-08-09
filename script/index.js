@@ -52,7 +52,12 @@ function igualdad(texto, op) {
     const writeArea = document.getElementsByTagName("textarea")[0]
     let temp = texto
     let result = 0
-    let aux
+    let aux=0
+    for (let i = 0; i < temp.length; i++) {
+        if(temp[i]==="-"){
+            aux++
+        }
+    }
     if (temp.includes("*")) {
         op="*"
         temp = reOrdena(temp,aux,result,op)
@@ -66,8 +71,13 @@ function igualdad(texto, op) {
         temp = reOrdena(temp,aux,result,op)
     }
     else if (temp.includes("-")) {
+        console.log(temp, aux);
         op="-"
-        temp = reOrdena(temp,aux,result,op)
+        if (aux>1||aux===1&&temp[0]!=='-') {
+            temp = reOrdena(temp,aux,result,op)
+        }
+        writeArea.innerHTML = "= " + temp;
+        arr.length = 0
     }
     if ((!temp.includes("+"))&&(!temp.includes("*"))&&!(temp.includes("-"))&&!(temp.includes("/"))) {
         writeArea.innerHTML = "= " + temp;

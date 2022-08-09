@@ -54,36 +54,20 @@ function igualdad(texto, op) {
     let result = 0
     let aux
     if (temp.includes("*")) {
-        temp = temp.split("*")
-        for (let i = 1; i < temp.length; i++) {
-            result = multi( temp[i-1], temp[i] )
-            aux = `${auxOp.l}*${auxOp.r}`
-        }
-        temp = reOrdena(temp,aux,result,"*")
+        op="*"
+        temp = reOrdena(temp,aux,result,op)
     }
     else if (temp.includes("/")) {
-        temp = temp.split("/")
-        for (let i = 1; i < temp.length; i++) {
-            result = divi( temp[i-1], temp[i] )
-            aux = `${auxOp.l}/${auxOp.r}`
-        }
-        temp = reOrdena(temp,aux,result,"/")
+        op="/"
+        temp = reOrdena(temp,aux,result,op)
     }
     else if (temp.includes("+")) {
-        temp = temp.split("+")
-        for (let i = 1; i < temp.length; i++) {
-            result = sum( temp[i-1], temp[i] )
-            aux = `${auxOp.l}+${auxOp.r}`
-        }
-        temp = reOrdena(temp,aux,result,"+")
+        op="+"
+        temp = reOrdena(temp,aux,result,op)
     }
     else if (temp.includes("-")) {
-        temp = temp.split("-")
-        for (let i = 1; i < temp.length; i++) {
-            result = rest( temp[i-1], temp[i] )
-            aux = `${auxOp.l}-${auxOp.r}`
-        }
-        temp = reOrdena(temp,aux,result,"-")
+        op="-"
+        temp = reOrdena(temp,aux,result,op)
     }
     if ((!temp.includes("+"))&&(!temp.includes("*"))&&!(temp.includes("-"))&&!(temp.includes("/"))) {
         writeArea.innerHTML = "= " + temp;
@@ -91,6 +75,22 @@ function igualdad(texto, op) {
     }
 }
 function reOrdena(temp,aux,result,op) {
+    temp = temp.split(op)
+    for (let i = temp.length-2; i > -1; i--) {
+        if (op==='*') {
+            result = multi( temp[i], temp[i+1] )
+        }
+        if (op==='/') {
+            result = divi( temp[i], temp[i+1] )
+        }
+        if (op==='+') {
+            result = sum( temp[i], temp[i+1] )
+        }
+        if (op==='-') {
+            result = rest( temp[i], temp[i+1] )
+        }
+        aux = `${auxOp.l}${op}${auxOp.r}`
+    }
     if (result==="Error") {
         return "Error";
     }
@@ -113,7 +113,7 @@ function multi( l, r ) {
     }
     l = verifyL(l)
     r = verifyR(r)
-    return (parseInt(l)*parseInt(r)).toString()
+    return (parseFloat(l)*parseFloat(r)).toString()
 }
 function divi( l, r ) {
     if((l==='' || l==='0')||(r==='' || r==='0') ){
@@ -121,7 +121,7 @@ function divi( l, r ) {
     }
     l = verifyL(l)
     r = verifyR(r)
-    return (parseInt(l)/parseInt(r)).toString()
+    return (parseFloat(l)/parseFloat(r)).toString()
 }
 function sum( l, r ) {
     if(l===''){
@@ -132,7 +132,8 @@ function sum( l, r ) {
     }
     l = verifyL(l)
     r = verifyR(r)
-    return (parseInt(l)+parseInt(r)).toString()
+
+    return ( parseFloat(l)+ parseFloat(r)).toString()
 }
 function rest( l, r ) {
     if(l===''){
@@ -143,7 +144,7 @@ function rest( l, r ) {
     }
     l = verifyL(l)
     r = verifyR(r)
-    return (parseInt(l)-parseInt(r)).toString()
+    return (parseFloat(l)-parseFloat(r)).toString()
 }
 function verifyL(l) {
     let auxL=[]
